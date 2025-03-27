@@ -1,0 +1,52 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: tts
+      app.kubernetes.io/component: tts
+      app.kubernetes.io/instance: tts
+    name: tts
+    namespace: ritlab
+  spec:
+    ports:
+    - port: 7075
+      protocol: TCP
+      targetPort: 7075
+    selector:
+      deployment: tts
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"tts:dev"},"fieldPath":"spec.template.spec.containers[?(@.name==\"tts\")].image"}]'
+    labels:
+      app: tts
+      app.kubernetes.io/component: tts
+      app.kubernetes.io/instance: tts
+    name: tts
+    namespace: ritlab
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        deployment: tts
+    strategy:
+      type: RollingUpdate
+    template:
+      metadata:
+        labels:
+          deployment: tts
+      spec:
+        containers:
+        - image: image-registry.openshift-image-registry.svc:5000/ritlab/tts@sha256:bcd4f40bd9efbf7355c7d72eb537443e7f8de6615486bc92aa6e67986918b92f
+          imagePullPolicy: IfNotPresent
+          name: tts
+        restartPolicy: Always
+kind: List
+metadata:
+  resourceVersion: ""
