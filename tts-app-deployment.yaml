@@ -36,7 +36,6 @@ items:
     selector:
       matchLabels:
         deployment: tts-app
-    strategy:
     template:
       metadata:
         labels:
