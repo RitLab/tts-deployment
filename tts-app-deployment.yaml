@@ -32,7 +32,7 @@ items:
     name: tts-app
     namespace: ritlab
   spec:
-    replicas: 1
+    replicas: 2
     selector:
       matchLabels:
         deployment: tts-app
