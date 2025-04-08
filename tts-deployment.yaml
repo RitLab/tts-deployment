@@ -31,7 +31,7 @@ items:
     name: tts
     namespace: ritlab
   spec:
-    replicas: 2
+    replicas: 1
     selector:
       matchLabels:
         deployment: tts
